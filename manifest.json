@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Custom Video Background",
+  "version": "1.0",
+  "description": "Allows users to upload and set a custom video background for the new tab page.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';script-src 'self' https://suggestqueries.google.com"
+  }
+}
