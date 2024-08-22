@@ -48,10 +48,20 @@
 </head>
 <body>
   <!-- <video id="backgroundVideo" autoplay loop muted></video> -->
+  <div class="app"></div>
   <div id="search-container">
     <input type="text" id="search-input" placeholder="Search Google...">
     <div id="suggestions"></div>
   </div>
+
+  <script>
+    const child = document.querySelector('#child')
+    //创建我们的app组件
+    const app = Vue.createApp({
+      // template: child
+      template: `<h2>这是我的模板</h2>`
+    }).mount('#app')
+  </script>
   <script src="newtab.js"></script>
 </body>
 </html>
