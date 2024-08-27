@@ -1,0 +1,152 @@
+// 视频加载
+const videoLoad = () => {
+  const request = indexedDB.open("videoDB", 1);
+
+  request.onupgradeneeded = function(event) {
+    const db = event.target.result;
+    if (!db.objectStoreNames.contains("videos")) {
+      db.createObjectStore("videos", { keyPath: "id" });
+    }
+  };
+
+  request.onsuccess = function(event) {
+    const db = event.target.result;
+    const transaction = db.transaction(["videos"], "readonly");
+    const objectStore = transaction.objectStore("videos");
+    const getRequest = objectStore.get("backgroundVideo");
+
+    getRequest.onsuccess = function(event) {
+      const videoData = event.target.result;
+
+      if (videoData) {
+        const videoElement = document.getElementById('backgroundVideo');
+        const fileReader = new FileReader();
+
+        fileReader.onload = function(e) {
+          if (window.localStorage.getItem('loadAttr') === 'video') {
+            videoElement.src = e.target.result;
+            videoElement.style.display = 'block'
+          }else{
+            videoElement.style.display = 'none'
+          }
+        };
+
+        fileReader.readAsDataURL(videoData.file);
+      } else {
+        console.log("没有上传视频.");
+      }
+    };
+
+    getRequest.onerror = function() {
+      console.log("检索背景出错.");
+    };
+  };
+
+  request.onerror = function() {
+    console.log("打开数据库出错.");
+  };
+}
+// 图片加载
+const imageLoad = () => {
+  const request = indexedDB.open("imageDB", 1);
+
+  request.onupgradeneeded = function(event) {
+    const db = event.target.result;
+    if (!db.objectStoreNames.contains("image")) {
+      db.createObjectStore("image", { keyPath: "id" });
+    }
+  };
+
+  request.onsuccess = function(event) {
+    const db = event.target.result;
+    const transaction = db.transaction(["image"], "readonly");
+    const objectStore = transaction.objectStore("image");
+    const getRequest = objectStore.get("backgroundImage");
+
+    getRequest.onsuccess = function(event) {
+      const imageData = event.target.result;
+
+      if (imageData) {
+        const imageElement = document.getElementById('backgroundImage');
+        const fileReader = new FileReader();
+
+        fileReader.onload = function(e) {
+          if (window.localStorage.getItem('loadAttr') === 'image') {
+            imageElement.src = e.target.result;
+            imageElement.style.display = 'block'
+          }else{
+            imageElement.style.display = 'none'
+          }
+        };
+
+        fileReader.readAsDataURL(imageData.file);
+      } else {
+        console.log("没有上传图片.");
+      }
+    };
+
+    getRequest.onerror = function() {
+      console.log("检索背景出错.");
+    };
+  };
+
+  request.onerror = function() {
+    console.log("打开数据库出错.");
+  };
+}
+window.addEventListener('load', () => {
+  videoLoad()
+  imageLoad()
+})
+function throttle(fn, interval, options = { leading: true, trailing: false }) {
+  const { leading, trailing } = options
+  let lastTime = 0
+  let timer = null
+  const _throttle = function (...args) {
+    const nowTime = new Date().getTime() //现在的时间
+    if (lastTime === 0 && leading === false) {
+      //如果我们的lastTime === 0  并且我们第一次决定不触发的时候 我们才会将lastTime 赋值nowTime
+      lastTime = nowTime
+    }
+    //用现在的时间减去上一次执行后的时间 与 我们的时间间隔相比较 推出现在是否应该执行
+    const remainTime = interval - (nowTime - lastTime)
+    if (remainTime <= 0) {
+      if (timer) {
+        clearTimeout(timer)
+        timer = null
+      }
+      fn.apply(this, ...args)
+      lastTime = nowTime
+      // 一旦我们这里开始执行之后 我们就没必要再在下面增加定时器了 如果增加会出现执行多次情况
+      return
+    }
+    if (trailing && timer === null) {
+      timer = setTimeout(() => {
+        timer = null
+        fn.apply(this, ...args)
+        // 为了避免我们我们leading为true的时候重复执行  我们这边必须将lastTime置为我们现在正在执行的时间
+        lastTime = !leading ? 0 : new Date().getTime()
+      }, remainTime)
+    }
+  }
+  return _throttle
+}
+function searchFn() {
+  const query = this.value;
+  
+  if (query.length > 0) {
+    fetch(`https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}`)
+      .then(response => response.json())
+      .then(data => {
+        const suggestions = data[1];
+        if (suggestions.length) {
+          
+        }
+      })
+      .catch(error => console.error('Error fetching suggestions:', error));
+  } else {
+    document.getElementById('suggestions').innerHTML = '';
+  }
+}
+
+document.querySelector('.search-txt').addEventListener('input', throttle(searchFn, 300, { leading: true, trailing: true }));

@@ -1,25 +1,41 @@
 {
   "manifest_version": 3,
-  "name": "Custom Video Background",
-  "version": "1.0",
-  "description": "Allows users to upload and set a custom video background for the new tab page.",
+  "name": "new-tabs",
+  "version": "2.0",
+  "description": "This is new tabs page.",
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "tabs"
   ],
   "chrome_url_overrides": {
-    "newtab": "newtab.html"
+    "newtab": "./src/newtab.html"
   },
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "./src/popup.html",
     "default_icon": {
-      "16": "icon.png"
+      "128": "./src/icon.png"
     }
   },
-  "background": {
-    "service_worker": "background.js"
+  "icons": {
+    "16": "./src/icon.png",
+    "48": "./src/icon.png",
+    "128": "./src/icon.png"
   },
+  "host_permissions": [
+    "https://suggestqueries.google.com/*"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["popup.html", "popup.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "background": {
+    "service_worker": "./src/js/background.js"
+  },
+  "offline_enabled": false,
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self';script-src 'self' https://suggestqueries.google.com"
+    "extension_pages": "script-src 'self'; object-src 'self';script-src 'self' https://suggestqueries.google.com; script-src 'self'; object-src 'self'"
   }
 }
