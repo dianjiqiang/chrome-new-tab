@@ -1,3 +1,6 @@
+let textValue = ''
+let recommendList = []
+
 window.addEventListener('load', () => {
   // 默认选中输入框
   const input = document.querySelector('input')
@@ -104,4 +107,10 @@ window.addEventListener('load', () => {
     // 存储到localstorage中
     mouseMoveFunction(docklist)
   })
+  
+  if (textValue.length !== 0) {
+    document.querySelector('.recommend-list').style.display = 'block'
+  }else{
+    document.querySelector('.recommend-list').style.display = 'none'
+  }
 })

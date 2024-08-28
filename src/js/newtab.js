@@ -134,19 +134,38 @@ function throttle(fn, interval, options = { leading: true, trailing: false }) {
 function searchFn() {
   const query = this.value;
   
-  if (query.length > 0) {
-    fetch(`https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}`)
-      .then(response => response.json())
-      .then(data => {
-        const suggestions = data[1];
-        if (suggestions.length) {
-          
+  fetch(`https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}`)
+    .then(response => response.json())
+    .then(data => {
+      const suggestions = data[1];
+      recommendList = []
+      const listEl = document.querySelector('.recommend-list')
+      console.log(suggestions.length);
+      
+      if (suggestions.length !== 0) {
+        listEl.style.display = 'block'
+      }else{
+        listEl.style = 'display: none;'
+      }
+      if (suggestions.length !== 0) {
+        listEl.innerHTML = ''
+        const length = 40 * suggestions.length
+        if (length >= 200) {
+          listEl.style.height = 200 + 'px'
+        }else{
+          listEl.style.height = length + 'px'
         }
-      })
-      .catch(error => console.error('Error fetching suggestions:', error));
-  } else {
-    document.getElementById('suggestions').innerHTML = '';
-  }
+        suggestions.forEach(item => {
+          const div = document.createElement('div')
+          div.classList.add('lists')
+          div.innerHTML = item
+          div.addEventListener('click', () => {
+            window.location.href = `https://www.google.com/search?q=${encodeURIComponent(item)}`
+          })
+          listEl.appendChild(div)
+        })
+      }
+    })
+    .catch(error => console.error('Error fetching suggestions:', error));
 }
-
 document.querySelector('.search-txt').addEventListener('input', throttle(searchFn, 300, { leading: true, trailing: true }));
