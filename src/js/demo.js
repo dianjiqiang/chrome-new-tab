@@ -1,5 +1,6 @@
 let textValue = ''
 let recommendList = []
+let isFocus = false // 是否选中了输入框
 
 window.addEventListener('load', () => {
   // 默认选中输入框
@@ -8,18 +9,18 @@ window.addEventListener('load', () => {
   const google = document.querySelector('.google')
   const bing = document.querySelector('.bing')
   const baidu = document.querySelector('.baidu')
-  google.onclick = () => {
+  google.addEventListener('click', () => {
     localStorage.setItem('searchRef', 'https://www.google.com/search?q=')
     baseURL = 'https://www.google.com/search?q='
-  }
-  bing.onclick = () => {
+  })
+  bing.addEventListener('click', () => {
     localStorage.setItem('searchRef', 'https://cn.bing.com/search?q=')
     baseURL = 'https://cn.bing.com/search?q='
-  }
-  baidu.onclick = () => {
+  })
+  baidu.addEventListener('click', () => {
     localStorage.setItem('searchRef', 'https://www.baidu.com/s?wd=')
     baseURL = 'https://www.baidu.com/s?wd='
-  }
+  })
   let baseURL
   if (!localStorage.getItem('searchRef')) {
     baseURL = 'https://cn.bing.com/search?q='
@@ -36,11 +37,11 @@ window.addEventListener('load', () => {
       window.location.href= baseURL+searchValue
     }
   }
-  searchBtn.onclick = () => {
+  searchBtn.addEventListener('click', () => {
     const searchValue = input.value
     input.value = ''
     window.location.href= baseURL+searchValue
-  }
+  })
   
   const dock = document.querySelector('.dock')
   
@@ -65,7 +66,7 @@ window.addEventListener('load', () => {
     event.stopImmediatePropagation()
   })
   // 点击document 隐藏弹出框
-  document.addEventListener('click', () => {
+  document.addEventListener('click', function(event) {
     settingToup.classList.remove('on-toup')
     settingToup.classList.add('hidden-toup')
     event.stopImmediatePropagation()
@@ -114,3 +115,49 @@ window.addEventListener('load', () => {
     document.querySelector('.recommend-list').style.display = 'none'
   }
 })
+
+// 点击隐藏输入框处理
+document.addEventListener('click', () => {
+  document.querySelector('.recommend-list').style.display = 'none'
+  document.querySelector('.search-box').style.borderRadius = '40px'
+})
+// document.querySelector('#backgroundVideo').addEventListener('click', function(event) {
+//   event.stopImmediatePropagation()
+// })
+// document.querySelector('#backgroundImage').addEventListener('click', function(event) {
+//   event.stopImmediatePropagation()
+// })
+// document.querySelector('.tms').addEventListener('click', function(event) {
+//   event.stopImmediatePropagation()
+// })
+// document.querySelector('.setting').addEventListener('click', function(event) {
+//   event.stopImmediatePropagation()
+// })
+// document.querySelector('.bottom-dock').addEventListener('click', function(event) {
+//   event.stopImmediatePropagation()
+// })
+// document.querySelector('.setting-toup').addEventListener('click', function(event) {
+//   event.stopImmediatePropagation()
+// })
+// document.querySelector('.recommend-list').addEventListener('click', function(event) {
+//   event.stopImmediatePropagation()
+// })
+document.querySelector('.search-box').addEventListener('click', function(event) {
+  if(recommendList.length !== 0){
+    document.querySelector('.recommend-list').style.display = 'block'
+    document.querySelector('.search-box').style.borderRadius = '30px 30px 0 0' 
+  }
+  event.stopImmediatePropagation()
+})
+
+// 鼠标移动到别处就隐藏输入框
+// document.querySelector('.search-box').addEventListener('mouseleave', () => {
+//   if (!(textValue.length !== 0 || isFocus)) {
+//     setTimeout(() => {
+//       document.querySelector('.search-box').style.opacity = 0
+//     }, 300);
+//   }
+// })
+// document.querySelector('.search-box').addEventListener('mouseenter', () => {
+//   document.querySelector('.search-box').style.opacity = 1
+// })

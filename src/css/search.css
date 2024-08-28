@@ -10,6 +10,8 @@
   padding: 10px;
   display: flex;
   justify-content: center;
+  /* transition: all .5s ease-in-out;
+  opacity: 0; */
   -webkit-border-radius: 40px;
   -moz-border-radius: 40px;
   -ms-border-radius: 40px;
@@ -64,11 +66,11 @@
   padding: 0 14px;
   width: 100%;
   user-select: none;
-  transition: color .1s ease-in-out;
-  -webkit-transition: color .1s ease-in-out;
-  -moz-transition: color .1s ease-in-out;
-  -ms-transition: color .1s ease-in-out;
-  -o-transition: color .1s ease-in-out;
+  transition: color .3s ease-in-out;
+  -webkit-transition: color .3s ease-in-out;
+  -moz-transition: color .3s ease-in-out;
+  -ms-transition: color .3s ease-in-out;
+  -o-transition: color .3s ease-in-out;
 }
 .recommend-list .lists:hover{
   color: #2F77FF;

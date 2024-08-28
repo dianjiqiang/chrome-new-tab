@@ -133,19 +133,21 @@ function throttle(fn, interval, options = { leading: true, trailing: false }) {
 }
 function searchFn() {
   const query = this.value;
+  textValue = this.value;
   
   fetch(`https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}`)
     .then(response => response.json())
     .then(data => {
       const suggestions = data[1];
-      recommendList = []
       const listEl = document.querySelector('.recommend-list')
-      console.log(suggestions.length);
+      recommendList = suggestions
       
       if (suggestions.length !== 0) {
         listEl.style.display = 'block'
+        document.querySelector('.search-box').style.borderRadius = '30px 30px 0 0' 
       }else{
         listEl.style = 'display: none;'
+        document.querySelector('.search-box').style.borderRadius = '40px' 
       }
       if (suggestions.length !== 0) {
         listEl.innerHTML = ''
