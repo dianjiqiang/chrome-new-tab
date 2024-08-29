@@ -1,0 +1,50 @@
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#backgroundVideo,#backgroundImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  user-select: none;
+}
+#search-container {
+  width: 50%;
+}
+#search-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+body {
+  font-family: Arial, sans-serif;
+  padding: 10px;
+}
+input[type="file"] {
+  margin-bottom: 10px;
+}
+#suggestions {
+  margin-top: 5px;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  max-height: 150px;
+  overflow-y: auto;
+}
+#suggestions div {
+  padding: 10px;
+  cursor: pointer;
+}
+#suggestions div:hover {
+  background: #f0f0f0;
+}
