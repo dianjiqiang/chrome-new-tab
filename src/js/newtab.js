@@ -18,20 +18,15 @@ const videoLoad = () => {
     getRequest.onsuccess = function(event) {
       const videoData = event.target.result;
 
-      if (videoData) {
+      if (videoData && window.localStorage.getItem('loadAttr') === 'video') {
         const videoElement = document.getElementById('backgroundVideo');
-        const fileReader = new FileReader();
-
-        fileReader.onload = function(e) {
-          if (window.localStorage.getItem('loadAttr') === 'video') {
-            videoElement.src = e.target.result;
-            videoElement.style.display = 'block'
-          }else{
-            videoElement.style.display = 'none'
-          }
-        };
-
-        fileReader.readAsDataURL(videoData.file);
+        if (videoData?.file) {
+          const blob = new Blob([videoData.file], { type: 'text/plain' });
+          // 创建一个 URL 对象
+          const url = URL.createObjectURL(blob);
+          videoElement.src = url;
+          videoElement.style.display = 'block'
+        }
       } else {
         console.log("没有上传视频.");
       }
@@ -66,22 +61,17 @@ const imageLoad = () => {
     getRequest.onsuccess = function(event) {
       const imageData = event.target.result;
 
-      if (imageData) {
+      if (imageData && window.localStorage.getItem('loadAttr') === 'image') {
         const imageElement = document.getElementById('backgroundImage');
-        const fileReader = new FileReader();
-
-        fileReader.onload = function(e) {
-          if (window.localStorage.getItem('loadAttr') === 'image') {
-            imageElement.src = e.target.result;
-            imageElement.style.display = 'block'
-          }else{
-            imageElement.style.display = 'none'
-          }
-        };
-
-        fileReader.readAsDataURL(imageData.file);
+        if (imageData?.file) {
+          const blob = new Blob([imageData.file], { type: 'text/plain' });
+          // 创建一个 URL 对象
+          const url = URL.createObjectURL(blob);
+          imageElement.src = url;
+          videoElement.style.display = 'block'
+        }
       } else {
-        console.log("没有上传图片.");
+        console.log("没有上传视频.");
       }
     };
 
