@@ -1,5 +1,8 @@
 // 视频加载
 const videoLoad = () => {
+  if (window.localStorage.getItem('loadAttr') !== 'video') {
+    return
+  }
   const request = indexedDB.open("videoDB", 1);
 
   request.onupgradeneeded = function(event) {
@@ -17,7 +20,7 @@ const videoLoad = () => {
 
     getRequest.onsuccess = function(event) {
       const videoData = event.target.result;
-      if (videoData && window.localStorage.getItem('loadAttr') === 'video') {
+      if (videoData) {
         const videoElement = document.getElementById('backgroundVideo');
 
         if (videoData.file instanceof Blob) {
@@ -39,6 +42,9 @@ const videoLoad = () => {
 };
 // 图片加载
 const imageLoad = () => {
+  if (window.localStorage.getItem('loadAttr') !== 'image') {
+    return
+  }
   const request = indexedDB.open("imageDB", 1);
 
   request.onupgradeneeded = function(event) {
@@ -57,14 +63,14 @@ const imageLoad = () => {
     getRequest.onsuccess = function(event) {
       const imageData = event.target.result;
 
-      if (imageData && window.localStorage.getItem('loadAttr') === 'image') {
+      if (imageData) {
         const imageElement = document.getElementById('backgroundImage');
         if (imageData?.file) {
           const blob = new Blob([imageData.file], { type: 'text/plain' });
           // 创建一个 URL 对象
           const url = URL.createObjectURL(blob);
           imageElement.src = url;
-          videoElement.style.display = 'block'
+          imageElement.style.display = 'block'
         }
       } else {
         console.log("没有上传视频.");
