@@ -17,30 +17,26 @@ const videoLoad = () => {
 
     getRequest.onsuccess = function(event) {
       const videoData = event.target.result;
-
       if (videoData && window.localStorage.getItem('loadAttr') === 'video') {
         const videoElement = document.getElementById('backgroundVideo');
-        if (videoData?.file) {
-          const blob = new Blob([videoData.file], { type: 'text/plain' });
-          // 创建一个 URL 对象
-          const url = URL.createObjectURL(blob);
+
+        if (videoData.file instanceof Blob) {
+          const url = URL.createObjectURL(videoData.file);
           videoElement.src = url;
-          videoElement.style.display = 'block'
+          videoElement.style.display = 'block';
         }
       } else {
         console.log("没有上传视频.");
       }
     };
-
     getRequest.onerror = function() {
       console.log("检索背景出错.");
     };
   };
-
   request.onerror = function() {
     console.log("打开数据库出错.");
   };
-}
+};
 // 图片加载
 const imageLoad = () => {
   const request = indexedDB.open("imageDB", 1);
